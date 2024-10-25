@@ -13,7 +13,7 @@ public class App {
     }
 
     public static void run(){
-        double[] costs = new double[5];
+        double[] costs = new double[0];
         int counter = 0;
 
         while (true)
