@@ -12,46 +12,64 @@ public class App {
         app.run();
     }
 
-    public static void run(){
-        double[] costs = new double[0];
-        int counter = 0;
+    public void run(){
+        double[] costs = new double[1];
+        int counter = 1;
+        Scanner userInput = new Scanner(System.in);
 
         while (true)
         {
             //vat
-            Scanner vatInput = new Scanner(System.in);
             System.out.println("Enter the VAT rate of this item: ");
-            double vat = vatInput.nextDouble();
+            double vat = userInput.nextDouble();
 
             while (true)
             {
-                Scanner costInput = new Scanner(System.in);
-                System.out.println("Enter the cost of your item: ");
-                double cost = costInput.nextDouble();
+                double cost = readUser(userInput);
                 if (cost == 0)
                     break;
                 else {
                     if (counter >= costs.length)
                         costs = Arrays.copyOf(costs, costs.length + 1);
 
-                    costs[counter] = finalCost(cost, vat);
+                    costs[counter] = cost;
                     counter++;
                 }
             }
             Arrays.sort(costs);
             System.out.println(Arrays.toString(costs));
+            double total = finalCost(costs,vat);
+            System.out.println("The total cost of all your items are: "+total);
 
 
             System.out.println("To perform another calculation, press enter; else type QUIT to exit: ");
-            Scanner userInput = new Scanner(System.in);
             String user = userInput.nextLine();
-            if ("quit".equalsIgnoreCase(user)) {
+            if (user.equalsIgnoreCase("quit"))
                 break;
-            }
         }
     }
 
-    public static double finalCost(double c, double v){
-        return c*v/100+c;
+    public static double finalCost(double[] costs, double v){
+        double total = 0;
+        for (double c: costs){
+            total += (c+c*v/100);
+        }
+        return total;
+    }
+
+    public boolean prompt(){
+        System.out.println("Enter the cost of your item: ");
+        return true;
+    }
+
+    public boolean promptQuit(){
+        System.out.println("To perform another calculation, press enter; else type QUIT to exit: ");
+        return true;
+    }
+
+    public double readUser(Scanner scanner){
+        prompt();
+        return scanner.nextDouble();
+
     }
 }
